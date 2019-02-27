@@ -2,7 +2,7 @@
 #
 # EventTypeIdentification.py
 #
-# Copyright (C) by Andreas Zoglauer, Amal Metha & Caitlyn Chen.
+# Copyright (C) by Andreas Zoglauer, Amal Mehta & Caitlyn Chen.
 # All rights reserved.
 #
 # Please see the file License.txt in the main repository for the copyright-notice.
@@ -95,12 +95,12 @@ class EventTypeIdentification:
   def loadData(self):
     """
     Prepare numpy array datasets for scikit-learn and tensorflow models
-    
+
     Returns:
       list: list of the events types in numerical form: 1x: Compton event, 2x pair event, with x the detector (0: passive material, 1: tracker, 2: absober)
-      list: list of all hits as a numpy array containing (x, y, z, energy) as row 
+      list: list of all hits as a numpy array containing (x, y, z, energy) as row
     """
-   
+
     print("{}: Load data from sim file".format(time.time()))
 
 
@@ -112,7 +112,7 @@ class EventTypeIdentification:
     # Initialize MEGAlib
     G = M.MGlobal()
     G.Initialize()
-    
+
     # Fixed for the time being
     GeometryName = "$(MEGALIB)/resource/examples/geomega/GRIPS/GRIPS.geo.setup"
 
@@ -123,7 +123,7 @@ class EventTypeIdentification:
     else:
       print("Unable to load geometry " + GeometryName + " - Aborting!")
       quit()
-    
+
 
     Reader = M.MFileEventsSim(Geometry)
     if Reader.Open(M.MString(self.FileName)) == False:
@@ -139,11 +139,11 @@ class EventTypeIdentification:
     EventHits = []
 
     NEvents = 0
-    while True: 
+    while True:
       Event = Reader.GetNextEvent()
       if not Event:
         break
-  
+
       Type = 0
       if Event.GetNIAs() > 0:
         if Event.GetIAAt(1).GetProcess() == M.MString("COMP"):
@@ -151,19 +151,19 @@ class EventTypeIdentification:
         elif Event.GetIAAt(1).GetProcess() == M.MString("PAIR"):
           Type += 20 + Event.GetIAAt(1).GetDetectorType()
       else:
-        break  
-  
+        break
+
       Hits = np.zeros((Event.GetNHTs(), 4))
       for i in range(0, Event.GetNHTs()):
         Hits[i, 0] = Event.GetHTAt(i).GetPosition().X()
         Hits[i, 1] = Event.GetHTAt(i).GetPosition().Y()
         Hits[i, 2] = Event.GetHTAt(i).GetPosition().Z()
         Hits[i, 3] = Event.GetHTAt(i).GetEnergy()
-      
+
       NEvents += 1
       EventTypes.append(Type)
       EventHits.append(Hits)
-      
+
       if NEvents >= self.MaxEvents:
         break
 
@@ -172,7 +172,7 @@ class EventTypeIdentification:
 
     print("Occurances of different event types:")
     print(collections.Counter(EventTypes))
- 
+
 
     return EventTypes, EventHits
 
@@ -181,10 +181,10 @@ class EventTypeIdentification:
 
 
   def trainTFMethods(self):
-  
+
     # Load the data
     EventTypes, EventHits = self.loadData()
-  
+
     # Add VoxNet here
 
     return
