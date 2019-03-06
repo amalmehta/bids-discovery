@@ -69,6 +69,10 @@ class EventTypeIdentification:
     self.Algorithms = Algorithm
     self.MaxEvents = MaxEvents
 
+    self.LastEventIndex = 0
+    self.EventHits = EventHits
+    self.EventTypes = EventTypes 
+
 
 ###################################################################################################
 
@@ -168,14 +172,14 @@ class EventTypeIdentification:
       if NEvents >= self.MaxEvents:
         break
 
-    #print(EventTypes)
-    #print(EventHits)
-
     print("Occurances of different event types:")
     print(collections.Counter(EventTypes))
 
+    self.LastEventIndex = 0
+    self.EventHits = EventHits
+    self.EventTypes = EventTypes
 
-    return EventTypes, EventHits
+    return
 
 
 ###################################################################################################
