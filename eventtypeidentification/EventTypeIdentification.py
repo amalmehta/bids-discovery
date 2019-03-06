@@ -27,6 +27,7 @@ import sys
 import time
 import collections
 import numpy as np
+from voxnet import *
 
 
 ###################################################################################################
