@@ -70,8 +70,8 @@ class EventTypeIdentification:
     self.MaxEvents = MaxEvents
 
     self.LastEventIndex = 0
-    self.EventHits = EventHits
-    self.EventTypes = EventTypes 
+    self.EventHits = []
+    self.EventTypes = [] 
 
 
 ###################################################################################################
